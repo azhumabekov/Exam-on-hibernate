@@ -22,7 +22,7 @@ public class HibernateConnection {
             props.put(Environment.JAKARTA_JDBC_USER, "postgres");
             props.put(Environment.JAKARTA_JDBC_PASSWORD, "adilet.2005");
             props.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
-            props.put(Environment.HBM2DDL_AUTO, "create");
+            props.put(Environment.HBM2DDL_AUTO, "update");
             props.put(Environment.SHOW_SQL, "true");
 
             Configuration configuration = new Configuration();

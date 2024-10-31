@@ -6,6 +6,7 @@ import java15.config.HibernateConnection;
 import java15.dao.BankDao;
 import java15.entity.Bank;
 import java15.entity.Passport;
+import java15.entity.Region;
 
 import java.util.List;
 
@@ -51,6 +52,9 @@ public class BankDaoImpl implements BankDao, AutoCloseable {
         List<Bank> banks = null;
 
         try {
+            if (entityManager.getEntityManagerFactory() == null) {
+                throw new RuntimeException("EntityManagerFactory is not initialized.");
+            }
             entityManager.getTransaction().begin();
 
             banks = entityManager.createQuery(
@@ -71,6 +75,36 @@ public class BankDaoImpl implements BankDao, AutoCloseable {
         }
 
         return banks;
+    }
+
+    @Override
+    public void assignBankToRegion(Long bankId, Long regionId) {
+        try {
+            em.getTransaction().begin();
+
+            Bank bank = em.find(Bank.class, bankId);
+            if (bank == null) {
+                bank = new Bank();
+                bank.setId(bankId);
+                em.persist(bank);
+            }
+
+            Region region = em.find(Region.class, regionId);
+            if (region == null) {
+                throw new RuntimeException("Region not found");
+            }
+
+            bank.setRegion(region);
+            em.getTransaction().commit();
+            System.out.println("Bank assigned to region " + regionId);
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            System.out.println("Error assigning bank to region " + regionId);
+        }
     }
 
     @Override

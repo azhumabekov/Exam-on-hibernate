@@ -29,10 +29,8 @@ public class Bank {
     @ManyToOne
     private Region region;
 
-    public Bank(String name, String address, Set<Client> clients, Region region) {
+    public Bank(String name, String address) {
         this.name = name;
         this.address = address;
-        this.clients = clients;
-        this.region = region;
     }
 }
