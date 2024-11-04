@@ -19,12 +19,12 @@ public class Passport {
 
     private String inn;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "client_id", nullable = false) // Добавлено ограничение на null
     private Client client;
 
-    public Passport(String inn, Client client) {
+    public Passport(String inn) {
         this.inn = inn;
-        this.client = client;
+        this.client = null;
     }
 }

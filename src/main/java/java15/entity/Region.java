@@ -20,7 +20,8 @@ public class Region {
 
     private String regionName;
 
-    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<Bank> banks = new HashSet<>();
 
     public Region(String regionName, Set<Bank> banks) {

@@ -48,32 +48,18 @@ public class BankDaoImpl implements BankDao, AutoCloseable {
 
     @Override
     public List<Bank> getBanksByRegionName(String regionName) {
-        EntityManager entityManager = null;
-        List<Bank> banks = null;
+        List<Bank> banks;
 
-        try {
-            if (entityManager.getEntityManagerFactory() == null) {
-                throw new RuntimeException("EntityManagerFactory is not initialized.");
-            }
-            entityManager.getTransaction().begin();
+        try(EntityManager entityManager = HibernateConnection.getSessionFactory().createEntityManager()) {
 
-            banks = entityManager.createQuery(
-                            "SELECT b FROM Bank b WHERE b.region.regionName = :regionName", Bank.class)
+            banks = entityManager.createQuery("SELECT b FROM Bank b WHERE b.region.regionName = :regionName", Bank.class)
                     .setParameter("regionName", regionName)
                     .getResultList();
 
-            entityManager.getTransaction().commit();
         } catch (Exception e) {
-            if (entityManager != null && entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            throw new RuntimeException("Error fetching banks by region name: " + e.getMessage(), e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
 
+            throw new RuntimeException("Error fetching banks by region name: " + e.getMessage(), e);
+        }
         return banks;
     }
 

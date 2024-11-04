@@ -2,15 +2,16 @@ package java15;
 
 import java15.config.HibernateConnection;
 import java15.dao.BankDao;
+import java15.dao.ClientDao;
+import java15.dao.PassportDao;
 import java15.dao.RegionDao;
 import java15.dao.impl.BankDaoImpl;
+import java15.dao.impl.ClientDaoImpl;
+import java15.dao.impl.PassportDaoImpl;
 import java15.dao.impl.RegionDaoImpl;
-import java15.entity.Bank;
+import java15.entity.Passport;
 import java15.entity.Region;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Hello world!
@@ -20,6 +21,8 @@ public class App {
 //        HibernateConnection.getSessionFactory();
         RegionDao regionDao = new RegionDaoImpl();
         BankDao bankDao = new BankDaoImpl();
+        ClientDao clientDao = new ClientDaoImpl();
+        PassportDao passportDao = new PassportDaoImpl();
 
         Region region = new Region("Karakol");
         Region region1 = new Region("Jalal-Abad");
@@ -30,7 +33,7 @@ public class App {
 //        regionDao.save(region2);
 //        regionDao.save(region3);
         // get all regions
-//        regionDao.getAllRegions().forEach(System.out::println);
+//        System.out.println(regionDao.getAllRegions());
         // update region
 //        regionDao.updateRegion(4L, new Region("Osh"));
 
@@ -38,7 +41,7 @@ public class App {
 //        bankDao.save(new Bank("Mbank", "Jibek-Jolu 145"));
 
         // assign bank to region
-//        bankDao.assignBankToRegion(1L, 1L);
+//        bankDao.assignBankToRegion(2L, 2L);
         // bank
 //        bankDao.save(new Bank("Halyk-Bank", "Frunze 23"));
 //        bankDao.save(new Bank("Demir-Bank", "Elebesova 22"));
@@ -46,7 +49,26 @@ public class App {
         // bank delete
 //        bankDao.delete(4L);
         // getBanksByRegionName
-        bankDao.getBanksByRegionName("Balykchy");
+//        System.out.println(bankDao.getBanksByRegionName("Bishkek"));
+
+
+        /// Client
+        // save
+//        clientDao.save(new Client(null, "Adilet", null));
+//        clientDao.save(new Client(null, "Atay", null));
+//        clientDao.save(new Client(null, "Sake", null));
+        // delete
+//        clientDao.delete(3L);
+        // find by id
+//        System.out.println(clientDao.findById(1L));
+
+        /// Passport
+        // create
+        passportDao.savePassport(new Passport("21108200500784" ));
+        passportDao.savePassport(new Passport("10302200300413" ));
+        passportDao.savePassport(new Passport("20108200600564"));
+
+
 
 
     }

@@ -45,14 +45,9 @@ public class ClientDaoImpl implements ClientDao, AutoCloseable {
     @Override
     public Client findById(Long id) {
         try {
-            em.getTransaction().begin();
             Client client = em.find(Client.class, id);
-            em.getTransaction().commit();
             return client;
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
             e.printStackTrace();
             System.out.println("Client findById failed");
         }
