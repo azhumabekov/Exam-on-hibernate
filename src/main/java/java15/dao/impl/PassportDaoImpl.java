@@ -12,7 +12,6 @@ public class PassportDaoImpl implements PassportDao, AutoCloseable{
     private static EntityManager entityManager = HibernateConnection.getSessionFactory().createEntityManager();
     @Override
     public String savePassport(Passport passport) {
-        // Проверяем наличие клиента
         if (passport.getClient() == null) {
             return "Error: Passport must have an associated Client.";
         }
@@ -20,15 +19,12 @@ public class PassportDaoImpl implements PassportDao, AutoCloseable{
         try {
             entityManager.getTransaction().begin();
 
-            // Если клиент ещё не сохранён, сохраняем его
             if (passport.getClient().getId() == null) {
                 entityManager.persist(passport.getClient());
             } else {
-                // Убедитесь, что клиент уже существует
                 entityManager.merge(passport.getClient());
             }
 
-            // Сохраняем паспорт
             entityManager.persist(passport);
             entityManager.getTransaction().commit();
 
@@ -37,8 +33,7 @@ public class PassportDaoImpl implements PassportDao, AutoCloseable{
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-            // Логируем ошибку
-            e.printStackTrace(); // Замените на логирование в реальном приложении
+            e.printStackTrace();
             return "Error saving passport: " + e.getMessage();
         }
     }
